@@ -26,6 +26,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Relationship table
+
+<img src="https://raw.githubusercontent.com/manoelrochawlf/gamespace-server/14a4f8ba313ef07655024fca61f46830fd121b99/gamespace_server/prisma/prisma-erd.svg" width="170"/>
+
 ## Installation
 
 ```bash
