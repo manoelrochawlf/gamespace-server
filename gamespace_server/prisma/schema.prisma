@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Jogos {
+  id String @id @default(uuid())
+  Title String
+  CoverImageUrl String
+  Description String
+  Year Float
+  ImdbScore Float
+  TrailerYouTubeUrl String
+  GameplayYouTubeUrl String
+
+  JogosGeneros JogosGeneros[]
+  ProfilesJogos ProfilesJogos[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("jogos")
+}
+
+model Generos {
+  id String @id @default(uuid())
+  Name String
+
+  JogosGeneros JogosGeneros[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("generos")
+}
+
+model User {
+  id String @id @default(uuid())
+  Name String
+  Email String @unique
+  Password String
+  Cpf String
+  isAdmin Boolean?
+
+  Profiles Profiles[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
+}
+
+model Profiles {
+  id String @id @default(uuid())
+  Title String
+  ImageURL String
+
+  ProfilesJogos ProfilesJogos[]
+
+  User   User @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profiles")
+}
+
+model ProfilesJogos {
+
+  id  String  @id @default(uuid())
+  Profiles  Profiles? @relation(fields: [profilesId], references: [id])
+  Jogos  Jogos?  @relation(fields: [jogosId], references: [id])
+
+  jogosId String? @map("jogos_id")
+  profilesId  String?  @map("generos_id")
+
+
+  @@map("profiles_jogos")
+
+}
+
+model JogosGeneros {
+  id  String  @id @default(uuid())
+  Generos   Generos? @relation(fields: [generosId], references: [id])
+  Jogos    Jogos?  @relation(fields: [jogosId], references: [id])
+
+  jogosId String? @map("jogos_id")
+  generosId  String?  @map("generos_id")
+
+  @@map("jogos_generos")
+}
